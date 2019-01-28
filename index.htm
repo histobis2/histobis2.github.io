@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<!-- written by BBader -->
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Today's Status</title>
+    <script src="./Today&#39;s Status_files/jquery.min.js.download"></script>
+    <script src="./Today&#39;s Status_files/underscore-min.js.download"></script>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif
+        }
+        
+        body {
+            overflow-y: scroll;
+			background-color: #f9f9f9;
+        }
+        
+        #b {
+            color: #f7f7f7;
+            font-size: 7px
+        }
+        
+        #container {
+            height: auto;
+            margin: 0 auto;
+            overflow: auto;
+            overflow: hidden;
+            margin-bottom: 44px
+        }
+        
+        .largerest {
+            background-color: #ddd;
+            height: 130px;
+            width: 310px;
+            padding: 10px;
+            float: left;
+            margin-top: 20px;
+            margin-left: 30px;
+            text-align: left
+        }
+        
+        .largerest div {
+            width: 30px;
+            display: inline-block
+        }
+        
+        span.name {}
+        
+        div.rounds {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background: color()
+        }
+        
+        div.rounds span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 5px;
+            padding: 5px
+        }
+        
+        div.largerest span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 5px;
+            padding: 5px
+        }
+        
+        span.r2 {
+            background-color: #e0bd72
+        }
+        
+        span.r1 {
+            background-color: #85c693
+        }
+        
+        span.r3 {
+            background-color: #b789a6
+        }
+        
+        span.a {
+            background-color: #a5d1d1
+        }
+        
+        span.z {
+            background-color: #9b6360
+        }
+        
+        span.e1 {
+            background-color: #c6cc90
+        }
+        
+        span.e2 {
+            background-color: rgb(153, 150, 119)
+        }
+        
+        span.round {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 5px;
+            padding: 5px
+        }
+        
+        #map {
+            border-bottom: 1px solid #aaa;
+            height: 44px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap
+        }
+        
+        .roundname {
+            border-right: 1px solid #aaa;
+            padding-right: 10px
+        }
+        
+        .mapspan {
+            margin-left: 5px;
+            margin-right: 5px
+        }
+        
+        #empt {
+            margin: 0 auto;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            line-height: 100px;
+            font-size: 17px;
+            background-color: #aaa;
+            border-radius: 50px;
+            box-shadow: 5px 5px #888888;
+        }
+        
+        .dishname {
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        #ppl {
+            width: 100%;
+            /* height: 100%; */
+            margin: 0 auto;
+        }
+        
+        .person {
+            background-color: #ddd;
+            float: left;
+            min-height: 170px;
+            min-width: 280px;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .personName {
+            text-align: center;
+            padding: 10px;
+            font-size: 17px;
+        }
+        
+        .allids {
+			
+			  width: 250px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+			
+		}
+        
+        .rest {
+            background-color: #e8e8e8;
+            height: 130px;
+            width: 260px;
+            padding: 10px;
+            margin: 0 auto;
+            text-align: center
+        }
+        
+        #formwrap {
+            width: 30%;
+            margin: 0 auto;
+            padding-bottom: 8px;
+            padding-top: 8px;
+        }
+        
+        @media only screen and (max-device-width:480px) {
+            .rest {
+                width: 100%;
+                margin: 0 auto;
+                padding-right: 0px;
+                padding-left: 0px;
+            }
+            .person {
+                width: 90%;
+                padding-bottom: 0px;
+                margin-bottom: 20px;
+            }
+            #formwrap {
+                width: 80%;
+            }
+        }
+        
+        .xbutn {
+            position: relative;
+            float: right;
+            color: #333;
+            width: 20px;
+            height: 37px;
+            line-height: 37px;
+            top: 00px;
+            right: 0px;
+            font-size: 20px;
+        }
+        
+        .xbutn:hover {
+            cursor: pointer;
+        }
+        
+        input.formin {
+            height: 30px;
+            width: 100px;
+        }
+        
+        #addmenu {
+            background-color: #8A8A8A;
+			background-image: linear-gradient(#8A8A8A, #F0F0F0);
+			height: 15px;
+            width: 100%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+			padding-top: 5px;
+        }
+        
+        #addid {
+            background-color: darkcyan;
+            line-height: 30px;
+            font-size: 17px;
+            color: white;
+            text-align: center;
+            float: right;
+            width: 50px;
+            height: 30px;
+            padding-bottom: 3px;
+            padding-top: 3px;
+        }
+        
+        #addid:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="./Today&#39;s Status_files/js.cookie.min.js.download"></script>
+    <div id="addmenu">
+        <div id="formwrap">
+
+        </div>
+
+    </div>
+
+    <div id="ppl"><div class="person"><span class="xbutn" id="uidx1695364">X</span><div class="personName">Erez</div><div class="allids" id="uid1695364"></div></div></div>
+    <script>
+        var person_status_tpl = _.template(`<div class='rest'><span class='name'><%= name %></span><div class='rounds'><% for(var r in rounds){%><%if(rounds[r].Shift==1){%><span class=r2><%} %><%if(rounds[r].Shift==2){%><span class=r3><%} %><%if(rounds[r].Shift==5){%><span class=r1><%} %><%if(rounds[r].Shift==3){%><span class=z><%} %><%if(rounds[r].Shift==4){%><span class=a><%} %><%if(rounds[r].Shift==6){%><span class=e1><%} %><%if(rounds[r].Shift==7){%><span class=e2><%} %><%= rounds[r].round %></span><%}%></div><span class='dishname'><%= dish %></span></div>`);
+
+
+        function rem_ppl(id) {
+            delete window.ppl[id];
+            Cookies.set('ppl', window.ppl, { expires: 300 });
+        }
+
+        function add_ppl(name, id) {
+            window.ppl[id] = {
+                uid: id,
+                name: name
+            };
+            Cookies.set('ppl', window.ppl, { expires: 300 });
+        }
+
+        function check_arrived(opq, myres, change_data, target_proxy, m) {
+            var method = m || 'POST';
+            var proxy = target_proxy || 'https://cors-anywhere.herokuapp.com/';
+            var url = "https://www.10bis.co.il/checkpoint/services/OrdersService.svc/GetDailyResList";
+            var finalURL = proxy + url;
+
+            if (!myres) {
+                console.log('not ordered anything');
+                change_data(opq, myres, false);
+                return;
+            }
+
+            $.ajax({
+                url: finalURL,
+                type: method,
+                data: JSON.stringify({
+                    cultureName: "en-US"
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function(res) {
+                    console.log('got response');
+                    if (res) {
+                        console.log(myres.ResID + " sh: " + myres.Shift);
+                        var found = false;
+                        $.each(res.d, function(i, v) {
+                            console.log('checking ' + v.resId + ' sh: ' + v.Shift);
+                            if (v.resId == myres.ResID && v.Shift == myres.Shift) {
+                                console.log('has status for res');
+                                found = true;
+                                change_data(opq, myres, v.OrderArrived);
+                                return false;
+                            }
+                        });
+                        if (!found) {
+                            console.warn('no restaurant found for ' + opq);
+                            console.log('treating as never ordered');
+                            change_data(opq, myres, undefined, true);
+                        }
+                    }
+                },
+                error: function(e) {
+                    console.error(e);
+                }
+            });
+        }
+
+        function round_from_shift_number(n) {
+            if (n > 100) {
+                n = n - 100;
+            }
+            return {
+                5: 'R1',
+                1: 'R2',
+                2: 'R3',
+                3: 'BZ',
+                4: 'AZ',
+                6: 'E1',
+                7: 'E2',
+            }[n]
+        }
+
+        function build_date_string(d) {
+            var today = d || new Date();
+            return today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+        }
+
+        function get_date_from_offset() {
+            var qd = {}
+            location.search.substr(1).split("&").forEach(function(item) {
+                qd[item.split("=")[0]] = item.split("=")[1]
+            });
+
+            if ("o" in qd) {
+                var offset_str = qd["o"];
+                var offset_days = parseInt(offset_str);
+                if (isNaN(offset_days)) {
+                    return null;
+                }
+
+                if (offset_days < -7 || offset_days > 7) {
+                    return null;
+                }
+
+                var someDate = new Date();
+                someDate.setDate(someDate.getDate() + offset_days);
+                return someDate;
+            }
+            return null;
+        }
+
+        function fetch_update() {
+            var target_date = get_date_from_offset();
+            var today_asstr = build_date_string(target_date);
+            if (target_date) {
+                document.title = "status for: " + today_asstr;
+            }
+            console.log("updating for " + today_asstr);
+            var usercount = 0;
+            for (var personkey in window.ppl) {
+                usercount++;
+                var person = ppl[personkey];
+                console.log('updating for person: ' + person.name + " id:" + person.uid);
+                fetch_update_for_person(person.uid, today_asstr, function(uid, myres, arrived, error) {
+                    console.log(uid);
+                    console.dir(myres);
+                    console.dir(arrived);
+                    var uidid = '#uid' + uid;
+                    if (!$(uidid).length) {
+                        console.warn(uidid + ' no longer exists');
+                        return;
+                    }
+                    if (error) {
+                        if (target_date || (myres.OrderID == 0 && myres.DishId == 0 && myres.CategoryID == 0 && myres.ResName)) {
+                            console.log('allowing no error on target date');
+                        } else {
+                            console.error('some error');
+                            $(uidid).empty();
+                            $(uidid).html("<div class='rest'>Error</div>");
+                            $(uidid).parent().css("background-color", "#6d3f35");
+                            return;
+                        }
+                    }
+
+
+                    if (!myres) {
+                        console.log('never ordered');
+                        $(uidid).empty();
+                        $(uidid).html("<div class='rest'>Nothing</div>");
+                        $(uidid).parent().css("background-color", "#7c7c54");
+
+                    } else if (myres.Shift < 100) {
+                        var actualRasStr = round_from_shift_number(myres.Shift);
+                        myres.round = actualRasStr;
+                        var rounds = {
+                            round: myres
+                        };
+
+                        var name = myres.ResName;
+                        $(uidid).html($(person_status_tpl({
+                            'name': name,
+                            'rounds': rounds,
+                            'dish': myres.DishName
+                        })));
+                        if (arrived  && !target_date) {
+                            console.log('arrived');
+                            $(uidid).parent().css("background-color", "#90c17f");
+                        } else {
+                            console.log('hasnt arrived');
+                            $(uidid).parent().css("background-color", "#AAA");
+                        }
+                    } else {
+                        console.warn('dinner not supported');
+                    }
+                });
+            }
+            if (usercount == 0) {
+                console.log('no users');
+            }
+        }
+
+        function fetch_update_for_person(uid, today, change_content, target_proxy, m) {
+            var method = m || 'POST';
+            var proxy = target_proxy || 'https://cors-anywhere.herokuapp.com/';
+            var url = "https://www.10bis.co.il/checkpoint/services/OrdersService.svc/GetUserOrdersList";
+            var finalURL = proxy + url;
+            $.ajax({
+                url: finalURL,
+                type: method,
+                data: JSON.stringify({
+                    cultureName: "en-US",
+                    userId: uid,
+                    startDateStr: today,
+                    endDateStr: today
+
+                }),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function(res) {
+                    if (res) {
+                        check_arrived(uid, res.d[0], change_content);
+                    }
+                },
+                error: function(e) {
+                    console.error(e);
+                }
+            });
+        }
+
+        function add_person_to_dom(person) {
+            $('<div class=person><div class=personName>' + person.name + '</div><div class=allids id=uid' + person.uid + '></div></div>').appendTo($('#ppl'));
+            $('#uidx' + person.uid).click(function() {
+                console.log('removing');
+                console.dir(this);
+                var tuid = this.id.split('uidx')[1];
+                console.dir(tuid);
+                rem_ppl(tuid);
+                $(this).parent().remove();
+            });
+        }
+        $(document).ready(function() {
+            window.ppl = Cookies.getJSON('ppl') || {};
+			var url_string = window.location.href
+			var url = new URL(url_string);
+			var ppl_get = url.searchParams.get("ppl");
+			var array_users = ppl_get.split("$");
+			var object_users = {}
+			array_users.forEach(function(item) {
+                object_users[item.split(".")[1]] = {"uid" : item.split(".")[1], "name" : item.split(".")[0]}
+            });
+			console.log(ppl);
+            console.dir(window.ppl);
+			console.dir(object_users);
+			console.log("yeah");
+			window.ppl = object_users;
+			for (var personkey in window.ppl) {
+                var person = ppl[personkey];
+                console.dir(person);
+            }
+			
+            $('#ppl').empty();
+            $('#addid').click(function() {
+                var form_id = $('#uid').val();
+                var form_name = $('#name').val();
+                if ($.trim(form_id).length == 0) {
+                    console.warn('id is empty');
+                    $('#uid').val('');
+                } else if ($.trim(form_name).length == 0) {
+                    $('#name').val('');
+                    console.warn('name is empty');
+                } else {
+                    console.log('adding person');
+                    $('#uid').val('');
+                    $('#name').val('');
+                    console.log(form_id);
+                    console.dir(window.ppl);
+
+                    if (!(form_id in window.ppl) || !window.ppl[form_id]) {
+                        console.log('adding to dom');
+                        add_ppl(form_name, form_id);
+                        add_person_to_dom({
+                            name: form_name,
+                            uid: form_id
+                        });
+                        fetch_update();
+                    } else {
+                        add_ppl(form_name, form_id);
+                    }
+
+                }
+            });
+
+            for (var personkey in window.ppl) {
+                var person = ppl[personkey];
+                add_person_to_dom(person);
+            }
+
+            console.log('ready');
+            fetch_update();
+            setInterval(function() {
+                console.log('refreshing');
+
+                fetch_update();
+            }, 222 * 1000);
+        });
+    </script>
+<span id="b">c0d599e6750aa8bcd296de85dfe07eb9</span>
+
+
+</body></html>
